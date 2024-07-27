@@ -2,6 +2,7 @@ package com.scaler.productservice.controllers;
 
 import com.scaler.productservice.dtos.CreateProductRequestDto;
 import com.scaler.productservice.dtos.CreateProductResponseDto;
+import com.scaler.productservice.dtos.DeleteProductResponseDto;
 import com.scaler.productservice.models.Product;
 import com.scaler.productservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -35,8 +36,9 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable("id") Long id) {
-
+    public DeleteProductResponseDto deleteProduct(@PathVariable("id") Long id) {
+        Product product = productService.deleteProduct(id);
+        return DeleteProductResponseDto.fromProduct(product);
     }
 
     public void updateProduct() {}

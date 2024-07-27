@@ -3,10 +3,11 @@ package com.scaler.productservice.services;
 import com.scaler.productservice.dtos.FakeStoreCreateProductRequestDto;
 import com.scaler.productservice.dtos.FakeStoreCreateProductResponseDto;
 import com.scaler.productservice.models.Product;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Arrays;
 
 @Service("fakeStoreProductServiceImpl")
 public class ProductServiceFakeStoreImpl implements ProductService{
@@ -58,6 +59,15 @@ public class ProductServiceFakeStoreImpl implements ProductService{
 
     @Override
     public Product deleteProduct(Long Id) {
-        return null;
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<FakeStoreCreateProductResponseDto> entity = new HttpEntity<FakeStoreCreateProductResponseDto>(headers);
+
+        FakeStoreCreateProductResponseDto responseDto = restTemplate.exchange(
+                "https://fakestoreapi.com/products/" + Id,
+                HttpMethod.DELETE,
+                entity,
+                FakeStoreCreateProductResponseDto.class
+        ).getBody();
+        return responseDto.toProduct();
     }
 }
